@@ -16,6 +16,9 @@ eggs/
 .eggs/
 lib/
 Lib/
+Scripts/
+share/
+etc/
 lib64/
 parts/
 sdist/
