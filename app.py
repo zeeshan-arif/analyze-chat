@@ -3,6 +3,8 @@ import preprocessor, helper
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+plt.style.use("fivethirtyeight")
+
 st.sidebar.title("Chat Analyzer")
 
 uploaded_file = st.sidebar.file_uploader("Choose a file")
@@ -42,10 +44,13 @@ if uploaded_file is not None:
         st.title("Monthly Timeline")
         timeline = helper.monthly_timeline(selected_user, df)
         fig, ax = plt.subplots()
-        ax.plot(timeline["time"], timeline["messages"], color="green", linewidth=0.4)
-        ax.set_xticklabels(timeline["time"], fontsize=9)
+        ax.plot(timeline["time"], timeline["messages"], color="#457b9d", linewidth=1) # color="green", linewidth=0.4
+        ax.set_xticklabels(timeline["time"], fontsize=8)
+        ax.set_ylabel("Message Frequency")
         plt.xticks(rotation="vertical")
+        plt.tight_layout()
         st.pyplot(fig)
+
 
         # daily timeline
         st.title("Daily Timeline")
@@ -64,6 +69,7 @@ if uploaded_file is not None:
             busy_day = helper.week_activity_map(selected_user, df)
             fig, ax = plt.subplots()
             ax.bar(busy_day.index, busy_day.values, color="#2b2d42", edgecolor='black')
+            ax.set_ylabel("Message Frequency")
             plt.xticks(rotation=45)
             st.pyplot(fig)
         with col2:
@@ -122,5 +128,6 @@ if uploaded_file is not None:
             st.dataframe(emoji_df)
         with col2:
             fig,ax = plt.subplots()
-            ax.pie(emoji_df[1].head(),labels=emoji_df[0].head(),autopct="%0.2f")
+            explode = [0, 0.1, 0.2, 0.3, 0.4]
+            ax.pie(emoji_df[1].head(), labels=emoji_df[0].head(), explode=explode, shadow=True, autopct="%0.2f", wedgeprops={"edgecolor": "black"})
             st.pyplot(fig)
